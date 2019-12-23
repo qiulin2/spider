@@ -17,9 +17,9 @@ public class Main {
     public static void main(String[] args) {
 
 //        String para = "taskname=TestRedis";
-        String para = "taskname=Spider&url=https://sjz.jiaoyubao.cn/all/&maxDepth=10&maxLink=50000";
+        String para = "taskname=Spider&url=http://tl.cyg.changyou.com/goods/char_detail?serial_num=201912091748056873";
         System.out.println(para.getBytes().length);
-//        para = args[0];  80*100  8000b 6k
+//        para = args[0];
         Map<String,Object> pm = parseParameter(para);
         String taskname = pm.get("taskname").toString();
 
@@ -32,10 +32,13 @@ public class Main {
     private static Map<String,Object> parseParameter(String para) {
         Map<String,Object> ret = new HashMap<>();
         String[] ps1 = para.split("&+");
-        for(String p1 : ps1)
-        {
-            String[] ps2 = p1.split("=");
-            ret.put(ps2[0], ps2[1]);
+        for(String p1 : ps1) {
+            if(!p1.contains("url=")){
+                String[] ps2 = p1.split("=");
+                ret.put(ps2[0], ps2[1]);
+            }else {
+                ret.put("url", p1.substring(4,p1.length()));
+            }
         }
         return ret;
     }

@@ -63,9 +63,10 @@ public class Spider extends AbstractTask {
 
     public int doJob(){
         Map<String,Object> argumentsMap = getArgumentsMap();
+//        this.pageUrl = "http://tl.cyg.changyou.com/goods/char_detail?serial_num=201912091748056873";
         this.pageUrl = argumentsMap.get("url").toString();
-        setMaxDepth(Integer.parseInt(argumentsMap.get("maxDepth").toString()));
-        setMaxLink(Integer.parseInt(argumentsMap.get("maxLink").toString()));
+//        setMaxDepth(Integer.parseInt(argumentsMap.get("maxDepth").toString()));
+//        setMaxLink(Integer.parseInt(argumentsMap.get("maxLink").toString()));
         logger.info("开始初始化爬虫任务");
         domain = LinkUtil.getDomain(pageUrl);
         //队列注入首页地址
@@ -108,6 +109,7 @@ public class Spider extends AbstractTask {
                         } else {
                             Thread.sleep(1000);
                         }
+                        JsoupConnectionUtil jsoupConnectionUtil = new JsoupConnectionUtil();
                         FetchResult fetchResult = jsoupConnectionUtil.jsoupRequest(url);
                         //对抓取过的链接进行计数
                         totalLinks.addAndGet(1);
@@ -133,6 +135,7 @@ public class Spider extends AbstractTask {
     private void saveNewLink(String url, FetchResult fetchResult) throws Exception {
         //将二进制网页源码换成html
         String html = new String(fetchResult.getContent(), fetchResult.getEncoding());
+        System.out.println(html);
         //将html转换成可以进行操作的Document对象
         org.jsoup.nodes.Document doc = Jsoup.parse(html);
         //TODO 不同网站爬取需要自定义爬取规则
